@@ -1,0 +1,59 @@
+Create React App Generation
+updated 8-4-2020
+
+In the next lecture, Stephen will be going over how to install Create React App globally and generate the application. This method of generating a React project is no longer recommended.
+
+Instead of this:
+
+npm install -g create-react-app
+
+create-react-app client
+
+We need to run this command:
+
+npx create-react-app client
+
+Important Reminder:
+
+Once you have generated the React app you will need to delete the local git repository that Create React App may have automatically initialized.
+
+Inside the newly created client directory, run rm -r .git
+
+If you miss this step, the client folder will be considered a submodule and pushed as an empty folder to GitHub.
+
+Documentation:
+
+https://create-react-app.dev/docs/getting-started#npx
+
+If you've previously installed create-react-app globally via npm install -g create-react-app, we recommend you uninstall the package using npm uninstall -g create-react-app to ensure that npx always uses the latest version.
+
+
+-------------------------
+
+In the next lecture, we will be adding a client and worker service. There are two required configuration updates that need to be made:
+
+1) When adding the "Client" service, be sure to include the stdin_open: true configuration:
+
+  client:
+    stdin_open: true
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./client
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+Otherwise, you will get a "React App exited with Code 0" error in your terminal when we attempt to start up the application.
+
+2) When adding the "Worker" service, include the Redis host and port as environment variables:
+
+  worker:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./worker
+    volumes:
+      - /app/node_modules
+      - ./worker:/app
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+Otherwise, you will get a "Calculated Nothing Yet" error message.
