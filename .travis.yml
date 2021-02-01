@@ -13,7 +13,7 @@ after_sucess:
   - docker build -t jimandrews/multi-nginx ./nginx
   - docker build -t jimandrews/multi-server ./server
   - docker build -t jimandrews/multi-worker ./worker
-  # Log in to the docker CLI
+  # Log in to the docker CLI --trying to force a new build with this comment.
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # take those images and push them to docker hub
   - docker push jimandrews/multi-client
